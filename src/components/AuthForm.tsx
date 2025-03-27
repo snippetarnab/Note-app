@@ -7,6 +7,8 @@ import { CardContent, CardFooter } from "./ui/card";
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
+import { loginAction, signUpAction } from "@/action/user";
 
 type props = {
   type: "login" | "signup";
@@ -16,9 +18,39 @@ function AuthForm({ type }: props) {
   const [isPending, startTransition] = useTransition();
   const isLoginForm = type === "login";
   const router = useRouter();
-  const handleSubmit = (formdata: FormData) => {};
+  const handleSubmit = (formdata: FormData) => {
+    startTransition(async () => {
+      const email = formdata.get("email") as string;
+      const password = formdata.get("password") as string;
+
+      let title;
+      let description;
+      let errorMessage;
+      if (isLoginForm) {
+        errorMessage = (await loginAction(email, password)).errorMessage;
+        title = "Login";
+        description = "You have logged in successfully";
+      } else {
+        errorMessage = (await signUpAction(email, password)).errorMessage;
+        title = "Sign Up";
+        description = "Check your email for confirmation link";
+      }
+      if (!errorMessage) {
+        toast.success(title, {
+          description,
+          duration: 3000,
+        });
+        router.replace("/")
+      } else {
+        toast.error(errorMessage, {
+          description: errorMessage,
+          duration: 3000,
+        });
+      }
+    });
+  };
   return (
-    <form>
+    <form action={handleSubmit}>
       <CardContent className="grid w-full items-center gap-4">
         <div className="flex flex-col space-y-1.5">
           <Label htmlFor="email">Email</Label>
