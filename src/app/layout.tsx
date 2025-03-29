@@ -3,6 +3,9 @@ import "@/styles/globals.css";
 import { ThemeProvider } from "@/Provider/ThemeProvider";
 import { Toaster } from "sonner";
 import Header from "@/components/Header";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import AppSidebar from "@/components/Appsidebar";
+
 
 export const metadata: Metadata = {
   title: "Note-App",
@@ -23,12 +26,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex min-h-screen flex-col w-full">
-            <Header />
-            <main className="felx items-center justify-center flex-1 flex-col px-4 pt-10 xl:px-8">
-              {children}
-            </main>
-          </div>
+          <SidebarProvider>
+            <AppSidebar />
+            <div className="flex min-h-screen flex-col w-full">
+              <Header />
+              <main className="felx items-center justify-center flex-1 flex-col px-4 pt-10 xl:px-8">
+                {children}
+              </main>
+            </div>
+          </SidebarProvider>
           <Toaster richColors />
         </ThemeProvider>
       </body>
