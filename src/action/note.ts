@@ -39,6 +39,7 @@ export const deleteNoteAction = async (noteId: string) => {
     await prisma.note.delete({
       where: { id: noteId, authorId: user.id },
     });
+    return { errorMessage: null }; // if success
   } catch (error) {
     return handleError(error);
   }
