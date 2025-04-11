@@ -47,7 +47,7 @@ export const deleteNoteAction = async (noteId: string) => {
 };
 export const askAIAboutNotesAction = async (
   newQuestions: string[],
-  responses: string,
+  responses: string[],
 ) => {
   const user = await getuser();
   if (!user) throw new Error("You must logged in to AI Ask a question");

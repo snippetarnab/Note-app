@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { Textarea } from "./ui/textarea";
 import { debounceTimeout } from "@/lib/constants";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect } from "react";
 import useNote from "@/hooks/useNote";
 import { updateNoteAction } from "@/action/note";
 
