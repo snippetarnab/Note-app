@@ -28,7 +28,7 @@ function DeleteNoteButton({ noteId, deleteNoteLocally }: props) {
   const noteIdParam = useSearchParams().get("noteId") || "";
   const handleDeleteNote = () => {
     startTransition(async () => {
-      const { errorMessage } = await deleteNoteAction(noteId);
+      const { errorMessage} = await deleteNoteAction(noteId);
       if (!errorMessage) {
         toast.success("Note deleted", {
           description: "You have successfully deleted the note",
