@@ -2,10 +2,6 @@ import { createServerClient } from "@supabase/ssr";
 
 import { NextRequest, NextResponse } from "next/server";
 
-const baseUrl =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:3000"
-    : "https://notes-black-six.vercel.app";
 
 export async function middleware(request: NextRequest) {
   return await updateSession(request);
@@ -54,7 +50,9 @@ export async function updateSession(request: NextRequest) {
       data: { user },
     } = await supabase.auth.getUser();
     if (user) {
-      return NextResponse.redirect(new URL("/", baseUrl));
+      return NextResponse.redirect(
+        new URL("/", process.env.NEXT_PUBLIC_BASE_URL),
+      );
     }
   }
   const { searchParams, pathname } = new URL(request.url);
@@ -64,7 +62,7 @@ export async function updateSession(request: NextRequest) {
     } = await supabase.auth.getUser();
     if (user) {
       const { newestNoteId } = await fetch(
-        `${baseUrl}/api/fetch-newest-note?userId=${user.id}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/fetch-newest-note?userId=${user.id}`,
       ).then((res) => res.json());
       if (newestNoteId) {
         const url = request.nextUrl.clone();
@@ -72,7 +70,7 @@ export async function updateSession(request: NextRequest) {
         return NextResponse.redirect(url);
       } else {
         const { noteId } = await fetch(
-          `${baseUrl}/api/create-new-note?userId=${user.id}`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/create-new-note?userId=${user.id}`,
           {
             method: "POST",
             headers: {
@@ -89,3 +87,6 @@ export async function updateSession(request: NextRequest) {
 
   return supabaseResponse;
 }
+
+
+
