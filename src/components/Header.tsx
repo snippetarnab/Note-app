@@ -16,9 +16,9 @@ async function Header() {
       style={{ boxShadow: shadow }}
     >
       <SidebarTrigger className="absolute left-1 top-1" />
-      <Link href={"/"}>
+      <Link href={"/"} className="flex items-end gap-2">
         <Image
-          src={"/logo.png"}
+          src={"/logo1.png"}
           alt="logo"
           width={60}
           height={60}
@@ -26,7 +26,7 @@ async function Header() {
           priority
         />
         <h1 className="flex flex-col pb-1 text-2xl font-semibold leading-6">
-          Notes
+          AI <span>Notes</span>
         </h1>
       </Link>
       <div className="flex gap-4 ">
