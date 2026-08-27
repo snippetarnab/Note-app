@@ -3,7 +3,7 @@
 import { getuser } from "@/auth/sever";
 import { prisma } from "@/db/prisma";
 import { handleError } from "@/lib/utils";
-import googleai from "@/openai";
+import googleai from "@/gemini";
 
 export const createNoteAction = async (noteId: string) => {
   try {
