@@ -3,8 +3,7 @@
 import { getuser } from "@/auth/sever";
 import { prisma } from "@/db/prisma";
 import { handleError } from "@/lib/utils";
-import openai from "@/openai";
-import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
+import googleai from "@/openai";
 
 export const createNoteAction = async (noteId: string) => {
   try {
@@ -76,10 +75,7 @@ export const askAIAboutNotesAction = async (
       `.trim(),
     )
     .join("\n");
-  const messages: ChatCompletionMessageParam[] = [
-    {
-      role: "developer",
-      content: `
+  const systemInstruction = `
           You are a helpful assistant that answers questions about a user's notes. 
           Assume all questions are related to the user's notes. 
           Make sure that your answers are not too verbose and you speak succinctly. 
@@ -93,20 +89,23 @@ export const askAIAboutNotesAction = async (
     
           Here are the user's notes:
           ${formattedNotes}
-          `,
-    },
-  ];
+          `;
+
+  const contents: { role: "user" | "model"; parts: { text: string }[] }[] = [];
 
   for (let i = 0; i < newQuestions.length; i++) {
-    messages.push({ role: "user", content: newQuestions[i] });
+    contents.push({ role: "user", parts: [{ text: newQuestions[i] }] });
     if (responses.length > i) {
-      messages.push({ role: "assistant", content: responses[i] });
+      contents.push({ role: "model", parts: [{ text: responses[i] }] });
     }
   }
 
-  const completion = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages,
+  const response = await googleai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents,
+    config: {
+      systemInstruction,
+    },
   });
-  return completion.choices[0].message.content || "A problem has occurred";
+  return response.text || "A problem has occurred";
 };
