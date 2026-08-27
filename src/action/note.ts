@@ -3,7 +3,6 @@
 import { getuser } from "@/auth/sever";
 import { prisma } from "@/db/prisma";
 import { handleError } from "@/lib/utils";
-import googleai from "@/gemini";
 
 export const createNoteAction = async (noteId: string) => {
   try {
@@ -66,6 +65,7 @@ export const askAIAboutNotesAction = async (
   if (notes.length === 0) {
     return "You don't have any notes yet.";
   }
+  const { default: googleai } = await import("@/gemini");
   const formattedNotes = notes
     .map((note) =>
       `
