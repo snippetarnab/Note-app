@@ -7,7 +7,6 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/Appsidebar";
 import NoteProvider from "@/Provider/NoteProvider";
 
-
 export const metadata: Metadata = {
   title: "Note-App",
   description: "A note taking app built with Next.js",

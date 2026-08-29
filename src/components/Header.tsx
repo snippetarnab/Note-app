@@ -7,6 +7,12 @@ import { DarkModeToggle } from "./DarkModeToggle";
 import LogOutButton from "./LogoutButton";
 import { getuser } from "@/auth/sever";
 import { SidebarTrigger } from "./ui/sidebar";
+import { Courgette } from "next/font/google";
+
+const courgette = Courgette({
+  subsets: ["latin"],
+  weight: "400",
+});
 
 async function Header() {
   const user = await getuser();
@@ -25,8 +31,10 @@ async function Header() {
           className="rounded-full"
           priority
         />
-        <h1 className="flex flex-col pb-1 text-2xl font-semibold leading-6">
-          AI <span>Notes</span>
+        <h1
+          className={`flex flex-col pb-4 text-2xl font-semibold leading-6 ${courgette.className}`}
+        >
+          inotes
         </h1>
       </Link>
       <div className="flex gap-4 ">
